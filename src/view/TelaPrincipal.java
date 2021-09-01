@@ -8,20 +8,17 @@
  *
  * Created on 31/10/2011, 09:39:18
  */
-package presentation.gui;
+package view;
 
-import business.bo.ManipPes2Ensac1200BO;
-import business.bo.PingarIp2Ensac1200;
-import business.bo.PingarIpBalanca1;
-import business.bo.PingarIpBalanca2;
-import business.bo.PingarIpBalanca3;
-import business.to.PesagemEsteira;
+import control.BigBagCTR;
+import model.domain.Ensaque;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
-import connection.tcp.ConnTCP2Ensac1200;
+import model.domain.Balanca;
+import model.domain.BigBag;
 
 /**
  *
@@ -29,18 +26,8 @@ import connection.tcp.ConnTCP2Ensac1200;
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private DefaultTableModel modeloTabela = null;
-    
-    private boolean respPing1 = false;
-    private boolean conecSocket1 = false;
-    
-    private boolean respPing2 = false;
-    private boolean conecSocket2 = false;
-    
-    private boolean respPing3 = false;
-    private boolean conecSocket3 = false;
-    
+
     private double contador = 0;
     private DecimalFormat formato = new DecimalFormat("#");
     
@@ -58,28 +45,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         modeloTabela = (DefaultTableModel) jTablePesagem.getModel();
         
-//        this.teste();
-        
-        ConnTCP2Ensac1200 connTCP2Ensac1200 = new ConnTCP2Ensac1200(this);
-        connTCP2Ensac1200.start();
-        
-        //PingarIp2Ensac1200 pingarIp2Ensac1200 = new PingarIp2Ensac1200(this);
-        //pingarIp2Ensac1200.start();
+        BigBagCTR bigBag1CTR = new BigBagCTR(this);
+        bigBag1CTR.startCapturaEnsaqueBigBag1();
 
-//        ManipPes2Ensac1200BO manipPes2Ensac1200BO = new ManipPes2Ensac1200BO(this);
-//        manipPes2Ensac1200BO.manipulandoStringPes("030;00;  1206.2kg;11/06/2018;10:32:20;");
-        
-//        PingarIp2Ensac1200 pingarIp2Ensac1200 = new PingarIp2Ensac1200(this);
-//        pingarIp2Ensac1200.start();
-        
-//        PingarIpBalanca1 pingarIp1 = new PingarIpBalanca1(this);
-//        pingarIp1.start();
-//
-//        PingarIpBalanca2 pingarIp2 = new PingarIpBalanca2(this);
-//        pingarIp2.start();
-//        
-//        PingarIpBalanca3 pingarIp3 = new PingarIpBalanca3(this);
-//        pingarIp3.start();
+        BigBagCTR bigBag2CTR = new BigBagCTR(this);
+        bigBag2CTR.startCapturaEnsaqueBigBag2();
         
     }
 
@@ -220,58 +190,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     
-    public boolean isRespPing1() {
-        return respPing1;
-    }
-
-    public void setRespPing1(boolean respPing1) {
-        this.respPing1 = respPing1;
-    }
-
-    public boolean isConecSocket1() {
-        return conecSocket1;
-    }
-
-    public void setConecSocket1(boolean conecSocket1) {
-        this.conecSocket1 = conecSocket1;
-    }
-
-    public boolean isRespPing2() {
-        return respPing2;
-    }
-
-    public void setRespPing2(boolean respPing2) {
-        this.respPing2 = respPing2;
-    }
-
-    public boolean isConecSocket2() {
-        return conecSocket2;
-    }
-
-    public void setConecSocket2(boolean conecSocket2) {
-        this.conecSocket2 = conecSocket2;
-    }
-
-    public boolean isRespPing3() {
-        return respPing3;
-    }
-
-    public void setRespPing3(boolean respPing3) {
-        this.respPing3 = respPing3;
-    }
-
-    public boolean isConecSocket3() {
-        return conecSocket3;
-    }
-
-    public void setConecSocket3(boolean conecSocket3) {
-        this.conecSocket3 = conecSocket3;
-    }
-    
-    public void mostrarTela(PesagemEsteira pesEsteira){
+    public void mostrarTela(Ensaque ensaque){
+        
         String[] dados = new String [7];
 
-        int cacamba = Integer.parseInt(pesEsteira.getNumBalanca());
+        int cacamba = Integer.parseInt(ensaque.getNumBalanca());
             
         switch (cacamba) {
             case 1:
@@ -303,12 +226,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 dados[1] = "0";
                 break;
         }
-              
-//        dados[0] = "0";
-//        dados[1] = pesEsteira.getNumBalanca();
-        dados[2] = pesEsteira.getNumIDSaco();
-        dados[3] = pesEsteira.getPesoLiq();
-        dados[4] = pesEsteira.getData() + " " + pesEsteira.getHora();
+        
+        dados[2] = ensaque.getNumIDSaco();
+        dados[3] = ensaque.getPesoLiq();
+        dados[4] = ensaque.getData() + " " + ensaque.getHora();
 
         modeloTabela.insertRow(0, dados);
 
@@ -317,16 +238,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
 
         contador = contador + 1;
-
         jLabelContador.setText(formato.format(contador));
-
         pack();
-    }
-
-    public void teste(){
-        
-
         
     }
+
     
 }

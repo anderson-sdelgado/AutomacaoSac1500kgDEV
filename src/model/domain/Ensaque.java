@@ -3,13 +3,13 @@
  * and open the template in the editor.
  */
 
-package business.to;
+package model.domain;
 
 /**
  *
  * @author anderson
  */
-public class PesagemEsteira {
+public class Ensaque {
 
     private long id;
     private String numBalanca;
@@ -20,7 +20,15 @@ public class PesagemEsteira {
     private String lote;
     private String cor;
 
-    public PesagemEsteira() {
+    public Ensaque() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCor() {
@@ -77,15 +85,7 @@ public class PesagemEsteira {
     }
 
     public void setPesoLiq(String pesoLiq) {
-        this.pesoLiq = pesoLiq;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.pesoLiq = pesoLiq.replace(",", ".");
     }
 
 }
